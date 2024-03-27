@@ -72,7 +72,7 @@ def regex_fun(ids: list):
     resp = get_uniprot(my_ids)
     res = parse_response_uniprot(resp)
 
-  elif re.fullmatch('ENS[A-Z]{0}[0-9]{11}|ENS[A-Z]{3,4}[0-9]{11}', ids[0]):
+  elif re.fullmatch('(ENS([A-Z]{0})(E|FM|G|GT|P|R|T)[0-9]){11}|(ENS[A-Z]{3,4}(E|FM|G|GT|P|R|T)[0-9]{11})', ids[0]):
     resp = get_ensembl(my_ids)
     res = parse_response_ensembl(resp)
 
