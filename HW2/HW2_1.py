@@ -1,9 +1,10 @@
-#PART 1
-
 #import libraries
 import requests
 import json
+import re
 
+
+# PART 1
 #function 1 for Uniprot
 def get_uniprot(ids: list):
   accessions = ','.join(ids)
@@ -13,7 +14,7 @@ def get_uniprot(ids: list):
 #testing for function 1 (Uniprot)
 my_ids = ['P11473', 'P13053']
 resp = get_uniprot(my_ids)
-print(resp)
+print("Response code for get_uniprot function: ", resp)
 
 #function 2 for Uniprot
 def parse_response_uniprot(resp: dict):
@@ -30,8 +31,8 @@ def parse_response_uniprot(resp: dict):
     return output
 
 #testing of function 2 for Uniprot
-my_ids = ['P11473', 'P13053']
-parse_response_uniprot(resp)
+res = parse_response_uniprot(resp)
+print("Printing output for provided Uniprot IDs : ", res)
 
 #function 1 for Ensembl
 def get_ensembl(ids: list):
@@ -44,7 +45,7 @@ def get_ensembl(ids: list):
 #testing for function 1 (Ensembl)
 my_ids = ['ENSMUSG00000041147', 'ENSG00000139618']
 resp = get_ensembl(my_ids)
-print(resp)
+print("Response code for get_ensembl function: ", resp)
 
 # function 2 for Ensembl
 def parse_response_ensembl(resp: dict):
@@ -61,23 +62,17 @@ def parse_response_ensembl(resp: dict):
     return output
 
 #testing of function 2 (Ensembl)
-my_ids = ['ENSMUSG00000041147', 'ENSG00000139618']
-parse_response_ensembl(resp)
+res = parse_response_ensembl(resp)
+print("Printing output for provided Ensembl IDs : ", res)
 
 #PART 2
-
-#import libraries
-import requests
-import json
-import re
-
 #function for identifying the source by ID using regex and outputing corresponding parsed result
 def regex_fun(ids: list):
   if re.fullmatch('[OPQ][0-9][A-Z0-9]{3}[0-9]|[A-NR-Z][0-9]([A-Z][A-Z0-9]{2}[0-9]){1,2}', ids[0]):
     resp = get_uniprot(my_ids)
     res = parse_response_uniprot(resp)
 
-  elif re.fullmatch('ENS[A-Z]+[0-9]{11}', ids[0]):
+  elif re.fullmatch('ENS[A-Z]{0}[0-9]{11}|ENS[A-Z]{3,4}[0-9]{11}', ids[0]):
     resp = get_ensembl(my_ids)
     res = parse_response_ensembl(resp)
 
@@ -85,8 +80,10 @@ def regex_fun(ids: list):
 
 #testing the regex_fun function (with Ensembl IDs)
 my_ids = ['ENSMUSG00000041147', 'ENSG00000139618']
-regex_fun(my_ids)
+result = regex_fun(my_ids)
+print("Ensembl IDs were provided. Printing output: ", result)
 
 #testing the regex_fun function (with Uniprot IDs)
 my_ids = ['P11473', 'P13053']
-regex_fun(my_ids)
+result = regex_fun(my_ids)
+print("Uniprot IDs were provided. Printing output: ", result)
