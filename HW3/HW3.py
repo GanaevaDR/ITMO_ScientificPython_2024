@@ -48,7 +48,7 @@ class Car:
       print("The car cannot accelerate when it is being parked. Changing the state now")
       self.state = True
 
-    if upper_border == "None":
+    if upper_border == None:
       if self.current_speed == self.max_speed:
         print("The speed cannot be increased, current speed is: ", self.current_speed)
       elif self.current_speed >= (self.max_speed - self.step):
@@ -58,14 +58,14 @@ class Car:
         self.current_speed += self.step
         print("Current speed is:", self.current_speed)
 
-    elif upper_border != "None" and upper_border <= self.max_speed:
+    elif upper_border != None and upper_border <= self.max_speed:
       for i in IncreaseSpeed(self.current_speed, upper_border):
         self.current_speed = i
         print("Current speed is: ", self.current_speed)
 
       
   def brake(self, lower_border=None):
-    if lower_border == "None":
+    if lower_border == None:
       if self.current_speed < self.step:
         self.current_speed = 0
         print("Current speed is: ", self.current_speed)
@@ -73,7 +73,7 @@ class Car:
         self.current_speed -= self.step
         print("Current speed is: ", self.current_speed)
 
-    elif lower_border !="None" and lower_border >= 0:
+    elif lower_border != None and lower_border >= 0:
       for i in DecreaseSpeed(self.current_speed, lower_border):
         self.current_speed = i
         print("Current speed is: ", self.current_speed)
