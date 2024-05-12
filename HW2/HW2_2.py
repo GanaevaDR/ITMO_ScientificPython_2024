@@ -100,10 +100,11 @@ def parse_response_ensembl(resp: dict):
     for key, val in resp.items():
         species = val["species"]
         gene = val["display_name"]
-        description = val["description"]
+        #description = val["description"]
         feature = val["biotype"]
-        transcript = val["canonical_transcript"]
-        output[key] = {"organism": species, "gene": gene, "description": description, "feature": feature, "transcript name": transcript}
+        #transcript = val["canonical_transcript"]
+
+        output[key] = {"organism": species, "gene": gene, "feature": feature}
 
     return output
 
@@ -125,38 +126,42 @@ def regex_fun(ids: list):
 def final_function(file):
   seqkit_res = seqkit_parser(file)
 
-  type_f = list(seqkit_parser(file).values())[1]
-  if type_f == "Protein":
-    db = "Uniprot"
+  if seqkit_res==None:
+    print("Error when analyzing the file. Please check your input fasta and try again.")
+
   else:
-    db = "Ensembl"
+    type_f = list(seqkit_parser(file).values())[1]
+    if type_f == "Protein":
+      db = "Uniprot"
+    else:
+      db = "Ensembl"
 
-  print("Output of seqkit stats for the provided file: ")
-  print()
-
-  for i in range(len(seqkit_res)):
-    print(*list(seqkit_res.items())[i])
-
-
-  print()
-  print("The search will be performed against the following database: ", "\n", db)
-  print()
-
-
-  seq = biopython_parser(file)[1]
-  desc = biopython_parser(file)[2]
-  ids = biopython_parser(file)[0]
-  API_res = regex_fun(ids)
-
-  for i in range(len(ids)):
-    print("ID: ", ids[i])
+    print("Output of seqkit stats for the provided file: ")
     print()
-    print("Description: ", desc[i])
-    print("Sequence: ", seq[i])
-    print("Output of API request: ", "\n", list(API_res.items())[i])
+
+    for i in range(len(seqkit_res)):
+      print(*list(seqkit_res.items())[i])
+
+
     print()
-    print("=================")
+    print("The search will be performed against the following database: ", "\n", db)
     print()
+
+
+    seq = biopython_parser(file)[1]
+    desc = biopython_parser(file)[2]
+    ids = biopython_parser(file)[0]
+    API_res = regex_fun(ids)
+
+    for i in range(len(ids)):
+      print("ID: ", ids[i])
+      print()
+      print("Description: ", desc[i])
+      print("Sequence: ", seq[i])
+      print("Output of API request: ", "\n", list(API_res.items())[i])
+      print()
+      print("=================")
+      print()
 
 #testing
 
